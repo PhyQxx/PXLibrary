@@ -1,0 +1,12 @@
+.special-text{
+  cursor: pointer;
+}
+.special-text:hover{
+  color: #349EDF;
+}
+.special-text-bc{
+  cursor: pointer;
+}
+.special-text-bc :hover{
+  background: #545C64;
+}

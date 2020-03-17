@@ -1,21 +1,36 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Login from '@/view/Login'
-import Index from '@/view/Index'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/login',
-      name: 'Login',
-      component: Login
-    },
-    {
       path: '/',
       name: 'Index',
-      component: Index
+      component: () => import('@/view/Index'),
+      children:[
+        {
+          name: 'homepage',
+          path: 'homepage',
+          component: () => import('@/components/Homepage')
+        },
+        {
+          name: 'forum',
+          path: 'forum',
+          component: () => import('@/components/Forum')
+        },
+        {
+          name: 'blog',
+          path: 'blog',
+          component: () => import('@/components/Blog')
+        },
+        {
+          name: 'data',
+          path: 'data',
+          component: () => import('@/components/Data')
+        },
+        ]
     }
   ]
 })
