@@ -1,7 +1,9 @@
+server:
+  port: 8008
 ## mybatis
 mybatis:
-  mapper-locations: classpath*:com/phy/ebuy/dao/mapping/*.xml
-  typeAliasesPackage: com.phy.ebuy.model
+  mapper-locations: classpath*:com/phy/pxlibrary/dao/mapping/*.xml
+  typeAliasesPackage: com/phy/pxlibrary/model
 
 spring:
   datasource:

@@ -1,12 +1,49 @@
-.special-text{
-  cursor: pointer;
+.span{
+  color: #6B6B6B!important;
 }
-.special-text:hover{
-  color: #349EDF;
+.special-text-blue{
+  cursor: pointer!important;
+}
+.special-text-blue:hover{
+  color: #349EDF!important;
+}
+.special-text-yellow{
+  cursor: pointer!important;
+}
+.special-text-yellow:hover{
+  color: #FFD04B!important;
 }
 .special-text-bc{
-  cursor: pointer;
+  cursor: pointer!important;
 }
 .special-text-bc :hover{
-  background: #545C64;
+  background: #545C64!important;
+}
+.yellow{
+  color: #FFD04B!important;
+}
+.grey{
+  color: #545C64!important;
+}
+.grey1{
+  color: #999!important;
+}
+.blue{
+  color: #349EDF!important;
+}
+/*鼠标样式*/
+.pointer{
+  cursor: pointer!important;
+}
+.cursor-default{
+  cursor: default!important;
+}
+.underline{
+  text-decoration: underline!important;
+}
+.underline-hover:hover{
+  text-decoration: underline!important;
+}
+.radius{
+  border-radius: 50%!important;
 }

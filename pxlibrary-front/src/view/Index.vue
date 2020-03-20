@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       <el-menu
-        :default-active="activeIndex2"
+        :default-active="activeIndex"
         class="el-menu-demo"
         mode="horizontal"
         @select="handleSelect"
@@ -12,17 +12,17 @@
         <el-menu-item index="1" @click="goHomepage">首页</el-menu-item>
         <el-menu-item index="2" @click="goForum">论坛</el-menu-item>
         <el-menu-item index="3" @click="goBlog">博客</el-menu-item>
-        <el-menu-item index="4" @click="goData">资料</el-menu-item>
-        <el-menu-item class="right" index="5" v-if="isLogin" @click="login">登录</el-menu-item>
-        <el-menu-item class="right" index="6" v-if="isLogin" @click="register">注册</el-menu-item>
-        <el-submenu index="7" class="right" v-if="!isLogin">
+        <el-menu-item index="4" @click="goDownload">下载</el-menu-item>
+        <el-menu-item class="right" index="5" v-if="!isLogin" @click="login">登录</el-menu-item>
+        <el-menu-item class="right" index="6" v-if="!isLogin" @click="register">注册</el-menu-item>
+        <el-submenu index="7" class="right" v-if="isLogin">
           <template slot="title">{{userName}}</template>
           <el-menu-item index="2-1">我的收藏</el-menu-item>
           <el-menu-item index="2-2">个人中心</el-menu-item>
           <el-menu-item index="2-3">账号设置</el-menu-item>
-          <el-menu-item index="2-4">退出</el-menu-item>
+          <el-menu-item index="2-4" @click="signOut">退出</el-menu-item>
         </el-submenu>
-        <el-menu-item class="right" index="8" v-if="!isLogin">
+        <el-menu-item class="right" index="8" v-if="isLogin">
           <i class="el-icon-edit"></i>
           <span>写博客</span>
         </el-menu-item>
@@ -92,9 +92,19 @@
 </template>
 
 <script>
+
     export default {
         name: "Index",
       data() {
+        let username;
+        let isLogin;
+        if (sessionStorage.getItem("userInfo") == '' || sessionStorage.getItem("userInfo") == null) {
+          isLogin = false;
+        } else {
+          let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+          isLogin = true;
+          username = userInfo.nick_name;
+        }
         let againPassword = (rule, value, callback) => {
           if (value === '') {
             callback(new Error('请再次输入密码'));
@@ -105,12 +115,12 @@
           }
         }
           return{
+            isRouterAlive: true,
             dialogVisible: false,
             dialogVisible1: false,
             activeIndex: '1',
-            activeIndex2: '1',
-            isLogin: true,
-            userName: "",
+            isLogin: isLogin,
+            userName: username,
             form: {
               username: '',
               password: '',
@@ -147,17 +157,21 @@
           }
       },
       methods:{
+        reload () {
+          this.isRouterAlive = false;
+          this.$nextTick(() => (this.isRouterAlive = true))
+        },
         goHomepage() {
           this.$router.push({name:'homepage'})
         },
         goForum() {
-          this.$router.push({name:'forum'})
+          this.$router.push({name:'forumhomepage'})
         },
         goBlog() {
           this.$router.push({name:'blog'})
         },
-        goData() {
-          this.$router.push({name:'data'})
+        goDownload() {
+          this.$router.push({name:'download'})
         },
         login() {
           this.dialogVisible = true
@@ -169,23 +183,44 @@
         // console.log(key, keyPath);
         },
         confirm() {
-          console.log("登录",this.form);
-          if (this.form.username == 'phy0316' && this.form.password == 'phy0316') {
-            this.isLogin = false;
-            this.dialogVisible = false;
-            this.userName = this.form.username;
-            this.$message({
-              message: "登录成功",
-              type: "success"
-            });
-          } else {
-            this.dialogVisible = true;
-            this.$message.error('用户名和密码不匹配');
-          }
+          this.$ajax.post('/px/login', {username:this.form.username,password:this.form.password}, r => {
+            if (r != '') {
+              this.$message({
+                message: "登录成功",
+                type: "success"
+              });
+              location.reload()
+              this.dialogVisible = false;
+              sessionStorage.setItem("userInfo",JSON.stringify(r));
+              let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));
+              this.userName = userInfo.nick_name;
+              this.isLogin = true;
+              // this.activeIndex = "1";
+              // console.log(this.activeIndex)
+            } else {
+              this.dialogVisible = true;
+              this.$message.error('用户名和密码不匹配');
+            }
+          })
         },
         confirm1() {
           console.log("注册",this.form1);
           this.dialogVisible1 = false;
+        },
+        signOut() {
+          this.$confirm('确认退出?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            sessionStorage.setItem("userInfo","");
+            location.reload()
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消退出'
+            });
+          });
         }
       },
     }
@@ -198,6 +233,7 @@
   .el-header{
     padding: 0 20%;
     width: 100%;
+    border-radius: 5px;
   }
   header{
     background-color: rgb(84, 92, 100);
@@ -206,7 +242,7 @@
     float: right;
   }
   main{
-    padding: 0 20%;
+    padding: 0;
     background: #F5F6F7;
   }
 </style>

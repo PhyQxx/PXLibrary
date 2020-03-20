@@ -69,6 +69,7 @@
 </template>
 
 <script>
+  import footers from "./Footer"
     export default {
         name: "homepage",
         data() {
@@ -127,6 +128,9 @@
         one(id,name) {
           console.log(id,name)
         }
+      },
+      components: {
+          footers
       }
     }
 </script>
@@ -157,6 +161,7 @@
   }
   .el-main{
     display: flex;
+    padding: 1rem 20%;
   }
   .content li{
     padding: 1rem;
@@ -193,7 +198,6 @@
     padding: 0.5rem;
   }
   .left{
-    flex: 1;
     height: 2rem;
   }
   .left img{
