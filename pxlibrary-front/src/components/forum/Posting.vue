@@ -57,7 +57,7 @@
 </template>
 
 <script>
-    import markdown from '../Mdeditor'
+    import markdown from '../components/Mdeditor'
     export default {
         name: "Posting",
       data() {
@@ -233,6 +233,8 @@
             console.log("赏分",this.integral)
             console.log("编辑内容",this.msg.mdValue)
             console.log("板块",this.plate)
+            console.log("板块",this.msgShow)
+            console.log("板块",this.msg)
           }
         }
       },

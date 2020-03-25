@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import footers from "./Footer"
+  import footers from "./components/Footer"
     export default {
       name: "Forum",
         data() {

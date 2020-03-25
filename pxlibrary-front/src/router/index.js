@@ -16,6 +16,11 @@ export default new Router({
           component: () => import('@/components/Homepage')
         },
         {
+          name: 'content',
+          path: 'content',
+          component: () => import('@/components/blog/Content')
+        },
+        {
           name: 'forum',
           path: 'forum',
           component: () => import('@/components/Forum'),

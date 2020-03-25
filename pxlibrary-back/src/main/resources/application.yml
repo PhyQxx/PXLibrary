@@ -3,7 +3,7 @@ server:
 ## mybatis
 mybatis:
   mapper-locations: classpath*:com/phy/pxlibrary/dao/mapping/*.xml
-  typeAliasesPackage: com/phy/pxlibrary/model
+  typeAliasesPackage: com.phy.pxlibrary.model
 
 spring:
   datasource:

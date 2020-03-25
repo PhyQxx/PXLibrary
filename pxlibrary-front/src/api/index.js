@@ -1,9 +1,11 @@
 // 配置API接口地址
 import de from "element-ui/src/locale/lang/de";
 
-var root = 'http://192.168.10.29:8008'
+// var root = 'http://192.168.10.29:8008'
+let root = 'http://123.57.22.91:8002'
+// let root = 'http://127.0.0.1:8002'
 // 引用axios
-var axios = require('axios')
+let axios = require('axios')
 // 自定义判断元素类型JS
 function toType (obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
