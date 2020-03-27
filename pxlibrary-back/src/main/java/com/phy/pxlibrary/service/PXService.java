@@ -24,4 +24,9 @@ public interface PXService {
      */
     Map<String, Object> getBlogContent(Map<String, Object> parameter);
 
+    /**
+     * 修改个人信息
+     */
+    Map<String, Object> modifyPersonalInfo(Map<String, Object> parameter);
+
 }

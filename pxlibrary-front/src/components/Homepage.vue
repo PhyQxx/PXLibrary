@@ -34,7 +34,7 @@
             <img src="../assets/imgs/list5.png" height="300" width="920"/>
           </el-carousel-item>
         </el-carousel>
-        <ul v-if="blogList != ''">
+        <ul v-if="blogList != ''" v-loading="loading">
           <li v-for="item in blogList" :data-id="item.id">
             <h1 class="special-text pointer" @click="getInfo(item.id,item.author_id)">{{item.title}}</h1>
             <p>{{item.content}}</p>
@@ -80,6 +80,7 @@
         data() {
 
           return{
+            loading: false,
             index:"",
             nav:[
               {
@@ -131,15 +132,17 @@
           }
         },
       created() {
+      },
+      mounted() {
+          this.loading = true;
         this.$ajax.post('/px/getBlogList', {type:""}, r => {
           this.blogList = r;
           for (let i = 0; i < this.blogList.length; i++) {
             this.blogList[i].header_photo = this.blogList[i].author.substring(0,1)
           }
+          this.loading = false;
         });
-      },
-      mounted() {
-
+        setTimeout(()=>{},1000)
       },
       methods:{
         handleOpen(key, keyPath) {
@@ -170,6 +173,10 @@
 </script>
 
 <style scoped>
+  .container >>> .el-main{
+    padding: 0 1rem 1rem 1rem;
+    margin-top: -1rem;
+  }
   .left div{
     float: left;
     height: 1.5rem;

@@ -31,8 +31,7 @@ public class PXServiceImpl implements PXService {
             res = pxMapper.register(parameter);
         } catch (Exception e) {
             e.printStackTrace();
-            result.put("data",res);
-            result.put("success",true);
+            res = 0;
         }
         result.put("data",res);
         result.put("success",true);
@@ -49,5 +48,20 @@ public class PXServiceImpl implements PXService {
     public Map<String, Object> getBlogContent(Map<String, Object> parameter) {
         Map<String, Object> res = pxMapper.getBlogContent(parameter);
         return res;
+    }
+
+    @Override
+    public Map<String, Object> modifyPersonalInfo(Map<String, Object> parameter) {
+        Map<String, Object> result = new HashMap<>();
+        int res = 0;
+        try {
+            res = pxMapper.modifyPersonalInfo(parameter.get("userInfo"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = 2;
+        }
+        result.put("data",res);
+        result.put("success",true);
+        return result;
     }
 }

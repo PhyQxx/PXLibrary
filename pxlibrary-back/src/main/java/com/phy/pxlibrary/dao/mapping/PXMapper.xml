@@ -76,5 +76,23 @@
         where b.id = #{id}
     </select>
 
+    <!--修改个人信息-->
+    <update id="modifyPersonalInfo" parameterType="map">
+        UPDATE px_user
+            SET
+            nick_name = #{nick_name},
+            real_name = #{real_name},
+            sex = #{sex},
+            birthday = #{birthday},
+            position = #{position},
+            company = #{position},
+            company = #{company},
+            education = #{education},
+            school = #{school},
+            industry = #{industry},
+            start_working_time = #{start_working_time},
+            brief_introduction = #{brief_introduction}
+            where user_id = #{user_id}
+    </update>
 
 </mapper>

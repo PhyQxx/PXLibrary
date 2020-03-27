@@ -28,4 +28,9 @@ public interface PXMapper {
      * 获取一条博客详情
      */
     Map<String,Object> getBlogContent(Map<String,Object> param);
+
+    /**
+     * 修改个人信息
+     */
+    int modifyPersonalInfo(Object parameter);
 }

@@ -1,3 +1,4 @@
+
 .span{
   color: #6B6B6B!important;
 }
@@ -30,6 +31,9 @@
 }
 .blue{
   color: #349EDF!important;
+}
+.dark{
+  color: #4D4D4D;
 }
 /*鼠标样式*/
 .pointer{

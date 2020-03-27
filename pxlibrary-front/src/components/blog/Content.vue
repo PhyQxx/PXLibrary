@@ -75,8 +75,17 @@
           </div>
         </div>
         <div class="middle">
-          <div :id="id">
-            <textarea class="" name="test-editormd-markdown-doc" v-text="content"></textarea>
+          <div class="editorContainer">
+            <markdown
+              :mdValuesP="msg.mdValue"
+              :fullPageStatusP="false"
+              :editStatusP="true"
+              :previewStatusP="true"
+              :navStatusP="true"
+              :icoStatusP="true"
+              @childevent="childEventHandler"
+              ref="markdown"
+            ></markdown>
           </div>
         </div>
         <div class="footer">
@@ -109,122 +118,79 @@
         </div>
       </div>
     </el-main>
+    <el-aside class="aside-right">
+      <div class="list">
+        <div class="title">
+          目录
+        </div>
+        <ul>
+          <li class="special-text-blue" v-for="item in typeList" :id="item.id">{{item.name}}</li>
+        </ul>
+      </div>
+    </el-aside>
   </el-container>
 </template>
 
 <script>
-  import $ from "jquery";
-  import uuid from "uuid/v4";
   import footers from '../components/Footer'
   import markdown from "../components/Mdeditor";
     export default {
-        name: "Content",
+      name: "Content",
       data() {
-          return{
-            all: "",
-            content: "",
-            type: false,
-            //最终生成的编辑器
-            editor:null,
-            //默认选项
-            defaultOptions:{
-              //width: "90%",
-              //height: 740,
-              path : "/static/editor.md/lib/",
-              theme : "",
-              previewTheme : "",
-              editorTheme : "pastel-on",
-              // markdown : md,   //动态设置的markdown文本
-              codeFold : true,
-              //syncScrolling : false,
-              saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
-              searchReplace : true,
-              watch : false,                // 关闭实时预览
-              htmlDecode : "style,script,iframe|on*",            // 开启 HTML 标签解析，为了安全性，默认不开启
-              toolbar  : false,             //关闭工具栏
-              //previewCodeHighlight : false, // 关闭预览 HTML 的代码块高亮，默认开启
-              emoji : true,
-              taskList : true,
-              tocm            : true,         // Using [TOCM]
-              tex : true,                   // 开启科学公式TeX语言支持，默认关闭
-              flowChart : true,             // 开启流程图支持，默认关闭
-              sequenceDiagram : true,       // 开启时序/序列图支持，默认关闭,
-              //dialogLockScreen : false,   // 设置弹出层对话框不锁屏，全局通用，默认为true
-              //dialogShowMask : false,     // 设置弹出层对话框显示透明遮罩层，全局通用，默认为true
-              //dialogDraggable : false,    // 设置弹出层对话框不可拖动，全局通用，默认为true
-              //dialogMaskOpacity : 0.4,    // 设置透明遮罩层的透明度，全局通用，默认值为0.1
-              //dialogMaskBgColor : "#000", // 设置透明遮罩层的背景颜色，全局通用，默认为#fff
-              imageUpload : true,
-              imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-              imageUploadURL : "./php/upload.php",
-              onload : function(md) {
-                // console.log(data.markdown);
-                this.fullscreen();
-                this.unwatch();
-                this.watch().fullscreen();
-                // this.setMarkdown("");
-                this.width("100%");
-                this.height(480);
-                this.resize("100%", 640);
-              },
-            }
-          }
+        return {
+          all: "",
+          type: false,
+          id:'',
+          msgShow:'我要显示的内容',
+          dilogStatus:false,
+          msg: {
+            mdValue:''
+          },
+          flag:false,
+          typeList: [
+            {
+              id: "1",
+              name: "Java"
+            },
+            {
+              id: "2",
+              name: "前端"
+            },
+            {
+              id: "3",
+              name: "数据库"
+            },
+          ]
+        }
       },
       created() {
       },
       mounted() {
-        this.$ajax.post("/px/getBlogContent",{id:sessionStorage.getItem("blogId"),authorId:sessionStorage.getItem("authorId")},r=>{
+        this.$ajax.post("/px/getBlogContent", {
+          id: sessionStorage.getItem("blogId"),
+          authorId: sessionStorage.getItem("authorId")
+        }, r => {
           this.all = r;
           this.type = r.status;
           this.all.label = r.label.split(",");
-          this.content = r.content;
-          this.all.header_photo = this.all.author.substring(0,1)
+          this.msg.mdValue = r.content;
+          this.all.header_photo = this.all.author.substring(0, 1)
+          setTimeout(()=>{this.$refs.markdown.addLine()},1)
         })
-        let vm=this;
-        //加载editormd
-        this.requireEditor(function(){
-          vm.editor=editormd(vm.id,vm.getOptions());
-        })
-      },
-      props:{
-        /**
-         * editormd挂载元素的id
-         */
-        id:{
-          type:String,
-          default:uuid()
-        },
-        /**
-         * editormd的选项对象
-         */
-        options:{
-          type:Object
-        }
+
       },
       methods: {
-        /**
-         * 异步加载editormd
-         * callback 成功后的回调函数
-         */
-        requireEditor(callback){
-          let vm=this;
-          //设置全局变量，因为editormd依赖jquery
-          window.$=window.jQuery=$;
-          //异步加载并执行
-          $.getScript("/static/editor.md/editormd.min.js",function(script){
-            callback();
-          });
-          //加载css
-          $('head').append( $('<link rel="stylesheet" type="text/css" />').attr('href', '/static/editor.md/css/editormd.min.css') );
+        childEventHandler:function(res){
+          // res会传回一个data,包含属性mdValue和htmlValue，具体含义请自行翻译
+          this.msg=res;
         },
-        /**
-         * 得到最终的options，组件属性上获得的选项覆盖此处的默认选项
-         */
-
-        getOptions(){
-          return Object.assign(this.defaultOptions,this.options);
+        closeMaskFn:function(){
+          this.msgShow='';
+          this.dilogStatus=false;
         },
-
+        handleChange(val) {
+          console.log(val);
+        },
       },
       components: {
         footers,
@@ -232,8 +198,30 @@
       },
     }
 </script>
-
-<style scoped>
+<style lang="scss" scoped>
+  .mdContainer >>> .editContainer,.mdContainer >>> .navContainer{
+    display: none!important;
+  }
+  .list{
+    .title{
+      padding-left: 1rem;
+      height: 3rem;
+      line-height: 3rem;
+      background: #999;
+      color: #fff;
+    }
+    background: #fff;
+    ul{
+      margin: 0;
+      list-style: none;
+      li{
+        padding: 0.5rem 0;
+        }
+      }
+  }
+  .aside-right{
+    margin-left: 1rem;
+  }
   .authorspan{
     margin-left: 2.5rem;
   }
@@ -382,7 +370,7 @@
     font-size: 1.5rem;
   }
   .el-container{
-    padding: 0 20%;
+    padding: 0 10%;
   }
   .el-aside{
     margin-top: 1rem;

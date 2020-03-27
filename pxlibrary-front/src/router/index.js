@@ -16,6 +16,33 @@ export default new Router({
           component: () => import('@/components/Homepage')
         },
         {
+          name: 'personal',
+          path: '/personal',
+          component: () => import('@/components/personal'),
+          children: [
+            {
+              name: 'mycollection',
+              path: '/mycollection',
+              component: () => import('@/components/personal/MyCollection')
+            },
+            {
+              name: 'myblog',
+              path: '/myblog',
+              component: () => import('@/components/personal/MyBlog')
+            },
+            {
+              name: 'personaldata',
+              path: '/personaldata',
+              component: () => import('@/components/personal/PersonalData')
+            },
+            {
+              name: 'accountsettings',
+              path: '/accountsettings',
+              component: () => import('@/components/personal/AccountSettings')
+            },
+          ]
+        },
+        {
           name: 'content',
           path: 'content',
           component: () => import('@/components/blog/Content')

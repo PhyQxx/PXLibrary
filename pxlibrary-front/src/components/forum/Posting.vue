@@ -32,6 +32,7 @@
             :navStatusP="true"
             :icoStatusP="true"
             @childevent="childEventHandler"
+            ref="markdown"
           ></markdown>
         </div>
       </div>
@@ -190,6 +191,9 @@
           },
           flag:false,
         }
+      },
+      mounted() {
+        // setTimeout(()=>{this.$refs.markdown.addLine()},1000)
       },
       methods: {
         childEventHandler:function(res){

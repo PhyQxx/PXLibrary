@@ -33,7 +33,7 @@
         <textarea name="" class="mdEditor" @keydown.9="tabFn" v-scroll="editScroll" v-model="input">{{this.mdValuesP}}</textarea>
       </div>
       <div class="previewContainer markdown-body" v-scroll="previewScroll" v-html="compiledMarkdown" v-if="previewStatus">
-        {{this.previewStatusP}}
+
       </div>
     </div>
   </div>
@@ -87,10 +87,9 @@
         icoStatus: Boolean(this.icoStatusP),
         maxEditScrollHeight: 0,
         maxPreviewScrollHeight: 0,
-        /*htmlText: function () {
-          return marked(this.input, {
+        htmlText: marked(this.mdValuesP, {
             sanitize: true
-          })*/
+          })
       }
     },
     created: function() {
@@ -98,6 +97,8 @@
         this.editStatus = true;
         this.previewStatus = true;
       }
+    },
+    mounted() {
     },
     methods: {
       tabFn: function(evt) {

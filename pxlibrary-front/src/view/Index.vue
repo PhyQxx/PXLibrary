@@ -17,10 +17,10 @@
         <el-menu-item class="right" index="6" v-if="!isLogin" @click="register">注册</el-menu-item>
         <el-submenu index="7" class="right" v-if="isLogin">
           <template slot="title">{{userName}}</template>
-          <el-menu-item index="2-1">我的收藏</el-menu-item>
-          <el-menu-item index="2-2">我的博客</el-menu-item>
-          <el-menu-item index="2-3">个人中心</el-menu-item>
-          <el-menu-item index="2-4">账号设置</el-menu-item>
+          <el-menu-item index="2-1" @click="goMyCollection">我的收藏</el-menu-item>
+          <el-menu-item index="2-2" @click="goMyBlog">我的博客</el-menu-item>
+          <el-menu-item index="2-3" @click="goPersonalData">个人中心</el-menu-item>
+          <el-menu-item index="2-4" @click="goAccountSettings">账号设置</el-menu-item>
           <el-menu-item index="2-5" @click="signOut">退出</el-menu-item>
         </el-submenu>
         <el-menu-item class="right" index="8" v-if="isLogin">
@@ -175,6 +175,39 @@
         goDownload() {
           this.$router.push({name:'download'})
         },
+        goMyCollection() {
+          let router = this.$router.resolve({
+            name:'mycollection',
+            params: {
+              index: "1"
+            }
+          })
+          window.open(router.href+"?1",'_blank')
+        },
+        goMyBlog() {
+          this.$router.push({
+            name:'myblog',
+            params: {
+              index: "2"
+            }
+          })
+        },
+        goPersonalData() {
+          this.$router.push({
+            name:'personaldata',
+            params: {
+              index: "3"
+            }
+          })
+        },
+        goAccountSettings() {
+          this.$router.push({
+            name:'accountsettings',
+            params: {
+              index: "4"
+            }
+          })
+        },
         login() {
           this.dialogVisible = true
         },
@@ -194,6 +227,9 @@
                 message: "登录成功",
                 type: "success"
               });
+              this.$router.push({
+                name: "/homepage"
+              })
               location.reload();
               this.dialogVisible = false;
               sessionStorage.setItem("userInfo",JSON.stringify(r));
@@ -230,6 +266,9 @@
           }).then(() => {
             sessionStorage.setItem("userInfo","");
             this.$router.push({name:'homepage'})
+            this.$router.push({
+              name: "/homepage"
+            })
             location.reload()
           }).catch(() => {
             this.$message({

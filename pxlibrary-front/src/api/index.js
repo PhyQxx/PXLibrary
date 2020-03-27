@@ -1,8 +1,8 @@
 // 配置API接口地址
 import de from "element-ui/src/locale/lang/de";
 
-// var root = 'http://192.168.10.29:8008'
-let root = 'http://123.57.22.91:8002'
+let root = 'http://192.168.10.29:8008'
+// let root = 'http://123.57.22.91:8002'
 // let root = 'http://127.0.0.1:8002'
 // 引用axios
 let axios = require('axios')
@@ -12,7 +12,7 @@ function toType (obj) {
 }
 // 参数过滤函数
 function filterNull (o) {
-  for (var key in o) {
+  for (let key in o) {
     if (o[key] === null) {
       delete o[key]
     }

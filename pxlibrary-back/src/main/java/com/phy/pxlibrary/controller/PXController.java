@@ -60,4 +60,12 @@ public class PXController {
         result.put("success",true);
         return result;
     }
+
+    //修改个人信息
+    @RequestMapping(value = "/modifyPersonalInfo", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> modifyPersonalInfo(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.modifyPersonalInfo(param);
+        return result;
+    }
 }
