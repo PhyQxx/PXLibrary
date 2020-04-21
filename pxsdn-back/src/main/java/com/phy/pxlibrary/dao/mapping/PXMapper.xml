@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.phy.pxlibrary.dao.PXMapper">
+    <!--验证登录-->
+    <select id="verifyLogin" parameterType="map" resultType="map" >
+        select * from px_user where (user_name = #{username}  and pass_word = #{password})
+        or (mobile = #{username} and pass_word = #{password})
+    </select>
+
+    <!--注册-->
+    <insert id="register" parameterType="map">
+        insert into px_user (user_id,user_name,pass_word,nick_name,mobile,user_type,creat_time,frozen_state,error_times,blog_integral,blog_fans) VALUES (uuid(),CONCAT('user-',#{mobile}),#{password},CONCAT('手机用户:',#{mobile}),#{mobile},'01',now(),'00','0','0','0')
+    </insert>
+
+    <!--获取博客列表-->
+    <select id="getBlogList" parameterType="map" resultType="map">
+        SELECT id,title,content_text content,u.nick_name author,author_id, praise_number,read_number,'' header_photo from px_blog b
+        INNER join px_user u on b.author_id = u.user_id
+        <if test="type != null and type != ''">
+            where type = #{type}
+        </if>
+    </select>
+
+    <!--获取一条博客信息-->
+    <select id="getBlogContent" resultType="map" parameterType="map">
+        SELECT
+        b.id,
+        title,
+        status,
+        blog_integral,
+        blog_fans,
+        u.nick_name author,
+        author_id,
+        publication_time,
+        read_number,
+        t.type_name personal_type,
+        label,
+        content_md content,
+        '' header_photo,
+        (select count(*) from px_blog where author_id = #{authorId}) original_number,
+        (select sum(read_number) from px_blog where author_id =  #{authorId}) all_read_number,
+        (select sum(praise_number) from px_blog where author_id =  #{authorId}) all_praise_number,
+        (select count(blog_id) from px_blog_comment where blog_id = #{id}) comment_number,
+        (select count(blog_id) from px_blog_comment_reply where blog_id = #{id}) reply_number,
+        (SELECT ranking from
+					(SELECT obj_new.user_id, obj_new.blog_integral, obj_new.rownum ranking FROM
+						( SELECT
+            obj.user_id,
+            obj.blog_integral,
+            @rownum := @rownum + 1 AS num_tmp,
+            @incrnum := CASE
+        WHEN @rowtotal = obj.blog_integral THEN
+            @incrnum
+        WHEN @rowtotal := obj.blog_integral THEN
+            @rownum
+        END AS rownum
+        FROM
+            (
+                SELECT
+                    user_id,
+                    blog_integral
+                FROM
+                    px_user
+                ORDER BY
+                    blog_integral
+            ) AS obj,
+            (
+                SELECT
+                    @rownum := 0 ,@rowtotal := NULL ,@incrnum := 0
+            ) r
+    ) AS obj_new) new_view where user_id = #{authorId}) ranking
+        from px_blog b
+        INNER join px_user u on b.author_id = u.user_id
+        LEFT join px_blog_comment c on b.id = c.blog_id
+        LEFT join px_blog_comment_reply r on b.id = r.blog_id
+        left join px_type t on b.personal_type = t.id
+        where b.id = #{id}
+    </select>
+
+    <!--修改个人信息-->
+    <update id="modifyPersonalInfo" parameterType="map">
+        UPDATE px_user
+            SET
+            nick_name = #{nick_name},
+            real_name = #{real_name},
+            sex = #{sex},
+            birthday = #{birthday},
+            position = #{position},
+            company = #{position},
+            company = #{company},
+            education = #{education},
+            school = #{school},
+            industry = #{industry},
+            start_working_time = #{start_working_time},
+            brief_introduction = #{brief_introduction}
+            where user_id = #{user_id}
+    </update>
+
+    <select id="getMyCollectionList" parameterType="map" resultType="map"></select>
+
+</mapper>
