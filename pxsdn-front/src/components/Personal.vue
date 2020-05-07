@@ -14,9 +14,9 @@
           <el-menu-item @click="goPersonalData" index="3">
             <span slot="title">个人资料</span>
           </el-menu-item>
-          <el-menu-item @click="goAccountSettings" index="4">
+          <!--<el-menu-item @click="goAccountSettings" index="4">
             <span slot="title">账号设置</span>
-          </el-menu-item>
+          </el-menu-item>-->
         </el-menu>
       </nav>
     </el-aside>
@@ -56,9 +56,17 @@
           this.$router.push({
             name:'myblog',
             params: {
-              index: "2"
+              index: "1"
             }
           })
+          sessionStorage.setItem("userId",JSON.parse(sessionStorage.getItem("userInfo")).user_id)
+          /*let router = this.$router.resolve({
+            name:'myblog',
+            params: {
+              index: "1"
+            }
+          })
+          window.open(router.href+"?1",'_blank')*/
         },
         goPersonalData() {
           this.$router.push({

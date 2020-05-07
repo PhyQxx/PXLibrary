@@ -174,7 +174,7 @@
 
 <style scoped>
   .container >>> .el-main{
-    padding: 0 1rem 1rem 1rem;
+    /*padding: 0 1rem 1rem 1rem;*/
     margin-top: -1rem;
   }
   .left div{

@@ -10,7 +10,8 @@ logging:
     com.phy.pxlibrary.dao : debug
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/pxlibrary?serverTimezone=Hongkong&useUnicode=true&characterEncoding=utf8
+#    url: jdbc:mysql://127.0.0.1:3306/pxsdn?serverTimezone=Hongkong&useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://123.57.22.91:3306/pxsdn?serverTimezone=Hongkong&useUnicode=true&characterEncoding=utf8
     username: root
     password: 123456
     db-name: pxlibrary

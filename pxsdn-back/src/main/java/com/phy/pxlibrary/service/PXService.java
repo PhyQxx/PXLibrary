@@ -34,4 +34,27 @@ public interface PXService {
      */
     Map<String, Object> getMyCollectionList(Map<String, Object> parameter);
 
+    /**
+     * 获取一个收藏夹的列表
+     */
+    Map<String, Object> getOneCollectionList(Map<String, Object> parameter);
+
+    /**
+     * 添加一个收藏夹
+     */
+    Map<String,Object> addCollection(Map<String,Object> param);
+
+    /**
+     * 账号设置：密码，手机，邮箱
+     * @param param
+     * @return
+     */
+    Map<String, Object> editor(Map<String, Object> param);
+
+    /**
+     * 根据条件查询论坛列表
+     * @param param
+     * @return
+     */
+    Map<String, Object> getForumList(Map<String, Object> param);
 }

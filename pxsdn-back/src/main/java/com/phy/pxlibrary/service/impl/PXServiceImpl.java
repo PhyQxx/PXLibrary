@@ -67,11 +67,63 @@ public class PXServiceImpl implements PXService {
     }
 
     @Override
-    public Map<String, Object> getMyCollectionList(Map<String, Object> parameter) {
-        List<Map<String,Object>> res = new ArrayList<>();
+    public Map<String, Object> getMyCollectionList(Map<String, Object> param) {
         Map<String,Object> result = new HashMap<>();
+        List<Map<String,Object>> res = pxMapper.getMyCollectionList(param);
+        for (int i = 0; i < res.size(); i++) {
+            int number = pxMapper.countOneCollection((String) res.get(i).get("id"));
+            res.get(i).put("number",number);
+        }
         result.put("data",res);
         result.put("success",true);
-        return null;
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getOneCollectionList(Map<String, Object> param) {
+        Map<String,Object> result = new HashMap<>();
+        List<Map<String,Object>> res = pxMapper.getOneCollectionList(param);
+        result.put("data",res);
+        result.put("success",true);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> addCollection(Map<String, Object> param) {
+        Map<String, Object> result = new HashMap<>();
+        int res = 0;
+        try {
+            res = pxMapper.addCollection(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = 0;
+        }
+        result.put("data",res);
+        result.put("success",true);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> editor(Map<String, Object> param) {
+        Map<String, Object> result = new HashMap<>();
+        int res = 0;
+        try {
+            res = pxMapper.editor(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = 0;
+        }
+        result.put("data",res);
+        result.put("success",true);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getForumList(Map<String, Object> param) {
+        Map<String,Object> result = new HashMap<>();
+        List<Map<String,Object>> res = pxMapper.getForumList(param);
+        result.put("data",res);
+        result.put("success",true);
+        return result;
     }
 }

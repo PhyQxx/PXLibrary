@@ -280,7 +280,7 @@
   }
   .original1{
     position: absolute;
-    color: #ca0c16;
+    color: #e33e33;
     background: #f9ecec;
     font-size: 0.9rem;
     margin-right: 1rem;

@@ -191,6 +191,7 @@
               index: "2"
             }
           })
+          sessionStorage.setItem("userId",JSON.parse(sessionStorage.getItem("userInfo")).user_id)
         },
         goPersonalData() {
           this.$router.push({
@@ -202,7 +203,7 @@
         },
         goAccountSettings() {
           this.$router.push({
-            name:'accountsettings',
+            name:'editorpassword',
             params: {
               index: "4"
             }
@@ -298,5 +299,6 @@
   main{
     padding: 0;
     background: #F5F6F7;
+    min-height: 50rem;
   }
 </style>

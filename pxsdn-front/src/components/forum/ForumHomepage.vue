@@ -19,14 +19,14 @@
           </div>
           <hr>
           <div class="list">
-            <div class="one" v-for="item in technologyList">
+            <div class="one" v-for="item in formList" v-if="item.region === '技术区'">
               <div class="title">
-                <span class="blue title-type">{{item.title.type}}</span>
+                <span class="blue title-type" @click="goForumSelectPlate(item.plate_code,item.type_code)">{{item.type_code}}</span>
                 ·
-                <span class="special-text-blue">{{item.title.title}}</span>
+                <span class="special-text-blue" @click="getContent(item.id,item.type_code)">{{item.title}}</span>
               </div>
               <div class="questioner pointer">
-                {{item.questioner}}
+                {{item.nick_name}}
               </div>
               <div class="replyNumber">
                 {{item.replyNumber}}
@@ -56,14 +56,14 @@
           </div>
           <hr>
           <div class="list">
-            <div class="one" v-for="item in lifeList">
+            <div class="one" v-for="item in formList" v-if="item.region === '生活区'">
               <div class="title">
-                <span class="blue title-type">{{item.title.type}}</span>
+                <span class="blue title-type" @click="goForumSelectPlate('',item.label)">{{item.label}}</span>
                 ·
-                <span class="special-text-blue">{{item.title.title}}</span>
+                <span class="special-text-blue">{{item.title}}</span>
               </div>
               <div class="questioner pointer">
-                {{item.questioner}}
+                {{item.nick_name}}
               </div>
               <div class="replyNumber">
                 {{item.replyNumber}}
@@ -85,7 +85,7 @@
           <div class="type-one" v-for="item in typeList">
             <div class="type-name special-text-blue">{{item.name}}</div>
             <div class="type-list">
-              <span class="special-text-blue underline-hover" v-for="i in item.type">{{i}}</span>
+              <span class="special-text-blue underline-hover" v-for="i in item.type" @click="goForumSelectPlate(item,i)">{{i}}</span>
             </div>
             <hr>
           </div>
@@ -179,64 +179,7 @@
               username: "帅气的布里茨",
               grade: "1",
             },
-            technologyList: [
-              {
-                title: {
-                  type: "C#",
-                  title: "有没有c#可以调用的，定位桌面图标位置的方法或者DLL？",
-                },
-                questioner: "美丽的娃哈哈",
-                replyNumber: "42",
-                popularity: "241"
-              },
-              {
-                title: {
-                  type: "C#",
-                  title: "有没有c#可以调用的，定位桌面图标位置的方法或者DLL？",
-                },
-                questioner: "美丽的娃哈哈",
-                replyNumber: "42",
-                popularity: "241"
-              },
-              {
-                title: {
-                  type: "C#",
-                  title: "有没有c#可以调用的，定位桌面图标位置的方法或者DLL？",
-                },
-                questioner: "美丽的娃哈哈",
-                replyNumber: "42",
-                popularity: "241"
-              },
-            ],
-            lifeList: [
-              {
-                title: {
-                  type: "C#",
-                  title: "有没有c#可以调用的，定位桌面图标位置的方法或者DLL？",
-                },
-                questioner: "美丽的娃哈哈",
-                replyNumber: "42",
-                popularity: "241"
-              },
-              {
-                title: {
-                  type: "C#",
-                  title: "有没有c#可以调用的，定位桌面图标位置的方法或者DLL？",
-                },
-                questioner: "美丽的娃哈哈",
-                replyNumber: "42",
-                popularity: "241"
-              },
-              {
-                title: {
-                  type: "C#",
-                  title: "有没有c#可以调用的，定位桌面图标位置的方法或者DLL？",
-                },
-                questioner: "美丽的娃哈哈",
-                replyNumber: "42",
-                popularity: "241"
-              },
-            ],
+            formList: [],
             typeList: [
               {
                 id:"0",
@@ -298,6 +241,7 @@
           }
       },
       mounted() {
+        this.getForumList();
         for (let i = 0; i < this.honorRollList.length; i++) {
           this.honorRollList[i].headerPhoto = this.honorRollList[i].username.substring(0,1)
         }
@@ -306,6 +250,31 @@
         } else if (this.integral.lastRanking < this.integral.nowRanking) {
           this.bottom = true
         }
+      },
+      methods: {
+        getForumList() {
+          this.$ajax.post("/px/getForumList",{},r=>{
+            this.formList = r;
+          })
+        },
+        goForumSelectPlate(item,it) {
+          this.$router.push({
+            path: 'forumselectplate',
+            query: {
+              type1: item.name,
+              type2: it
+            },
+          })
+        },
+        getContent(id,type) {
+          this.$router.push({
+            path: 'postcontent',
+            query: {
+              postId: id,
+              type2: type
+            },
+          })
+        },
       },
       components: {
           footers
@@ -530,10 +499,11 @@
     color: #999;
   }
   .title{
-    flex: 8;
+    flex: 7;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    padding-right: 1rem;
   }
   .questioner{
     flex: 2;

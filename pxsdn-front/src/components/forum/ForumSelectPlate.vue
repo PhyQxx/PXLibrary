@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header>
-      <el-breadcrumb separator-class="el-icon-arrow-right">
+      <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 0.5rem">
         <el-breadcrumb-item :to="{ path: '/forum/forumhomepage' }">CSDN论坛</el-breadcrumb-item>
         <el-breadcrumb-item v-if="type2">{{type2}}</el-breadcrumb-item>
       </el-breadcrumb>

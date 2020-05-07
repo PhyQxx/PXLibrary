@@ -9,15 +9,24 @@
 
     <!--注册-->
     <insert id="register" parameterType="map">
-        insert into px_user (user_id,user_name,pass_word,nick_name,mobile,user_type,creat_time,frozen_state,error_times,blog_integral,blog_fans) VALUES (uuid(),CONCAT('user-',#{mobile}),#{password},CONCAT('手机用户:',#{mobile}),#{mobile},'01',now(),'00','0','0','0')
+        insert into px_user (user_id,user_name,pass_word,nick_name,mobile,user_type,
+        register_time,frozen_state,error_times,blog_integral,blog_fans)
+        VALUES (uuid(),CONCAT('user-',#{mobile}),#{password},
+        CONCAT('手机用户:',#{mobile}),#{mobile},'01',now(),'00','0','0','0')
     </insert>
 
     <!--获取博客列表-->
     <select id="getBlogList" parameterType="map" resultType="map">
-        SELECT id,title,content_text content,u.nick_name author,author_id, praise_number,read_number,'' header_photo from px_blog b
+        SELECT id,title,content_text content,u.nick_name author,author_id,
+        praise_number,read_number,'' header_photo ,status,b.create_time
+        from px_blog b
         INNER join px_user u on b.author_id = u.user_id
+        where 1 = 1
         <if test="type != null and type != ''">
-            where type = #{type}
+            and type = #{type}
+        </if>
+        <if test="authorId != null and authorId != ''">
+            and author_id = #{authorId}
         </if>
     </select>
 
@@ -31,17 +40,23 @@
         blog_fans,
         u.nick_name author,
         author_id,
-        publication_time,
+        b.create_time,
         read_number,
-        t.type_name personal_type,
+        d.value personal_type,
         label,
         content_md content,
         '' header_photo,
         (select count(*) from px_blog where author_id = #{authorId}) original_number,
         (select sum(read_number) from px_blog where author_id =  #{authorId}) all_read_number,
         (select sum(praise_number) from px_blog where author_id =  #{authorId}) all_praise_number,
-        (select count(blog_id) from px_blog_comment where blog_id = #{id}) comment_number,
-        (select count(blog_id) from px_blog_comment_reply where blog_id = #{id}) reply_number,
+        <if test="id != null and id != ''">
+            (select count(blog_id) from px_blog_comment where blog_id = #{id}) comment_number,
+            (select count(blog_id) from px_blog_comment_reply where blog_id = #{id}) reply_number,
+        </if>
+        (select count(blog_id) from px_blog_comment
+            where author_id = '9665202572629976') all_comment_number,
+        (select count(blog_id) from px_blog_comment_reply
+            where author_id = '9665202572629976') all_reply_number,
         (SELECT ranking from
 					(SELECT obj_new.user_id, obj_new.blog_integral, obj_new.rownum ranking FROM
 						( SELECT
@@ -73,8 +88,12 @@
         INNER join px_user u on b.author_id = u.user_id
         LEFT join px_blog_comment c on b.id = c.blog_id
         LEFT join px_blog_comment_reply r on b.id = r.blog_id
-        left join px_type t on b.personal_type = t.id
-        where b.id = #{id}
+        left join px_dict d on b.personal_type = d.id
+        where 1=1
+        <if test="id != null and id != ''">
+          and b.id = #{id}
+        </if>
+        limit 1
     </select>
 
     <!--修改个人信息-->
@@ -96,6 +115,71 @@
             where user_id = #{user_id}
     </update>
 
-    <select id="getMyCollectionList" parameterType="map" resultType="map"></select>
+    <!-- 账号设置：密码，手机，邮箱 -->
+    <update id="editor" parameterType="map">
+        update px_user
+        <if test="password != null and password != ''">
+            set pass_word = #{password}
+        </if>
+        <if test="mobile != null and mobile != ''">
+            set mobile = #{mobile}
+        </if>
+        <if test="email != null and email != ''">
+            set mailbox = #{email}
+        </if>
+        where user_id = #{userId}
+    </update>
+
+    <!--获取收藏夹列表-->
+    <select id="getMyCollectionList" parameterType="map" resultType="map">
+        select * from px_dict where create_id = #{userId} and code = '1002'
+    </select>
+
+    <!--获取一个收藏夹的列表-->
+    <select id="getOneCollectionList" parameterType="map" resultType="map">
+        select * from px_collection c left join px_blog b on c.content_id = b.id
+        where create_id = #{userId} and collection_type_id = #{typeId} and isdelete = '0'
+    </select>
+
+    <!--获取一个收藏夹的文章数量-->
+    <select id="countOneCollection" resultType="int" parameterType="string">
+        select count(*) number from px_collection where collection_type_id = #{typeId}
+    </select>
+
+    <!--添加一个收藏夹-->
+    <insert id="addCollection" parameterType="map">
+        insert into px_dict (id,code,value,create_id,create_time)
+        VALUES (uuid(),'1002',#{name},#{userId},now())
+    </insert>
+
+    <!--根据条件查询论坛列表-->
+    <select id="getForumList" parameterType="map" resultType="map">
+        SELECT
+        p.id,
+        p.create_id,
+        p.title,
+        p.content,
+        p.region,
+        p.plate_code,
+        p.type_code,
+        p.label,
+        p.bonus,
+        p.create_time postCreatTime,
+        u.nick_name,
+        u.forum_score,
+        (select count(*) from px_post_floor where post_id = p.id) replyNumber,
+        (select count(*) from px_post_floor where post_id = p.id)*100+round(rand()*100) popularity
+        FROM `px_post` p left join px_user u on p.create_id = u.user_id
+        LEFT join px_post_floor f on p.id = f.post_id
+        where 1 = 1
+        <if test="condition != null and condition != ''">
+            and region = #{condition} or plate_code = #{condition}
+            or type_code = #{condition} or label = #{condition}
+        </if>
+        <if test="text != null and text != ''">
+            and title like CONCAT('%',#{text},'%')
+            or content like CONCAT('%',#{text},'%')
+        </if>
+    </select>
 
 </mapper>

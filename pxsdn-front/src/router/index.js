@@ -16,6 +16,28 @@ export default new Router({
           component: () => import('@/components/Homepage')
         },
         {
+          name: 'accountsettings',
+          path: '/accountsettings',
+          component: () => import('@/components/AccountSettings'),
+          children: [
+            {
+              name: 'editorpassword',
+              path: '/editorpassword',
+              component: () => import('@/components/accountsettings/editorpassword'),
+            },
+            {
+              name: 'editormobile',
+              path: '/editormobile',
+              component: () => import('@/components/accountsettings/editormobile'),
+            },
+            {
+              name: 'editoremail',
+              path: '/editoremail',
+              component: () => import('@/components/accountsettings/editoremail'),
+            }
+          ]
+        },
+        {
           name: 'personal',
           path: '/personal',
           component: () => import('@/components/personal'),
@@ -26,21 +48,17 @@ export default new Router({
               component: () => import('@/components/personal/MyCollection')
             },
             {
-              name: 'myblog',
-              path: '/myblog',
-              component: () => import('@/components/personal/MyBlog')
-            },
-            {
               name: 'personaldata',
               path: '/personaldata',
               component: () => import('@/components/personal/PersonalData')
             },
-            {
-              name: 'accountsettings',
-              path: '/accountsettings',
-              component: () => import('@/components/personal/AccountSettings')
-            },
+
           ]
+        },
+        {
+          name: 'myblog',
+          path: '/myblog',
+          component: () => import('@/components/personal/MyBlog')
         },
         {
           name: 'content',
@@ -76,6 +94,11 @@ export default new Router({
               name: 'posting',
               path: 'posting',
               component: () => import('@/components/forum/Posting'),
+            },
+            {
+              name: 'postcontent',
+              path: 'postcontent',
+              component: () => import('@/components/forum/PostContent'),
             },
           ]
         },

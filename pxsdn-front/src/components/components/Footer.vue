@@ -2,15 +2,17 @@
   <div class="container">
     <el-main>
       <div class="list">
-        <div class="one">
+        <div class="one" @click="service">
           <img src="../../assets/imgs/qq.png" />
           <span>QQ客服</span>
         </div>
-        <div class="one">
-          <i class="el-icon-s-promotion"></i>
-          <span>{{emil}}</span>
+        <div class="one" >
+          <a class="emil" rel="nofollow" href="https://mail.qq.com/" target="_blank">
+            <i class="el-icon-s-promotion"></i>
+            <span>{{emil}}</span>
+          </a>
         </div>
-        <div class="one">
+        <div class="one" @click="serviceBlog">
           <i class="el-icon-s-home"></i>
           <span>客服论坛</span>
         </div>
@@ -22,6 +24,15 @@
         <a class="beian" rel="nofollow" href="http://www.beian.miit.gov.cn" target="_blank"><p>备案号：鲁ICP备19037910号-1</p></a>
       </div>
     </el-main>
+    <el-dialog
+            title="QQ客服"
+            :visible.sync="dialogVisible"
+            width="30%">
+      <img class="QQservice" src="../../assets/imgs/qqService.png" alt="" size="80%">
+      <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -30,8 +41,19 @@
         name: "Footer",
       data() {
           return{
-            emil: "617594538@qq.com"
+            emil: "617594538@qq.com",
+            dialogVisible: false,
           }
+      },
+      methods: {
+        service() {
+          this.dialogVisible = true
+        },
+        serviceBlog() {
+          this.$alert('客服论坛建设中', '客服论坛', {
+            confirmButtonText: '确定',
+          });
+        },
       }
     }
 </script>
@@ -43,12 +65,15 @@
   }
   .el-main{
     background: #fff;
+    font-size: 0.9rem;
   }
   .list p{
     color: #8590A6;
+    margin: 0.3rem 0;
   }
   .one{
-    height: 2rem;
+    height: 1.5rem;
+    line-height: 1.5rem;
     color: #8590A6;
     cursor: pointer;
   }
@@ -70,5 +95,13 @@
   }
   .beian p{
     font-size: 0.9rem;
+  }
+  .QQservice{
+    height: 20rem;
+    margin: 0 auto;
+    display: block;
+  }
+  .emil{
+    color: #8590A6;
   }
 </style>

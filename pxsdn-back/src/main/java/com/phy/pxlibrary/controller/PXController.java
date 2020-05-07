@@ -18,7 +18,7 @@ public class PXController {
     @Autowired
     PXService pxService;
 
-    //判断登录
+    /**判断登录 */
     @RequestMapping(value = "/login", method = {RequestMethod.POST,RequestMethod.GET})
     @ResponseBody
     public Map<String,Object> verifyLogin(@RequestBody Map<String,Object> param) {
@@ -28,7 +28,7 @@ public class PXController {
         return result;
     }
 
-    //注册
+    /**注册 */
     @RequestMapping(value = "/register", method = {RequestMethod.POST,RequestMethod.GET})
     @ResponseBody
     public Map<String,Object> register(@RequestBody Map<String,Object> param) {
@@ -37,7 +37,7 @@ public class PXController {
         return result;
     }
 
-    //获取博客列表
+    /**获取博客列表 */
     @RequestMapping(value = "/getBlogList", method = {RequestMethod.POST,RequestMethod.GET})
     @ResponseBody
     public Map<String,Object> getBlogList(@RequestBody Map<String,Object> param) {
@@ -67,11 +67,44 @@ public class PXController {
         return result;
     }
 
-    //获取我的收藏列表
+    /**获取我的收藏列表*/
     @RequestMapping(value = "/getMyCollectionList", method = {RequestMethod.POST,RequestMethod.GET})
     @ResponseBody
     public Map<String,Object> getMyCollectionList(@RequestBody Map<String,Object> param) {
         Map<String,Object> result = pxService.getMyCollectionList(param);
         return result;
     }
+
+    /**获取一个收藏夹的列表*/
+    @RequestMapping(value = "/getOneCollectionList", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> getOneCollectionList(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.getOneCollectionList(param);
+        return result;
+    }
+
+    /**添加一个收藏夹*/
+    @RequestMapping(value = "/addCollection", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> addCollection(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.addCollection(param);
+        return result;
+    }
+
+    /**账号设置：密码，手机，邮箱*/
+    @RequestMapping(value = "/editor", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> editor(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.editor(param);
+        return result;
+    }
+
+    /**根据条件查询论坛列表*/
+    @RequestMapping(value = "/getForumList", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> getForumList(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.getForumList(param);
+        return result;
+    }
+
 }

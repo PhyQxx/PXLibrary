@@ -5,6 +5,7 @@ const  getDate = function() {
   let day;
   let hours;
   let minutes;
+  let second;
   if(day2.getMonth() < 9 ) {
     month = "0"+(day2.getMonth()+1)
   } else {
@@ -25,6 +26,11 @@ const  getDate = function() {
   } else {
     minutes = day2.getMinutes();
   }
-  return  day2.getFullYear()+"-" + month + "-" + day+" "+hours+":"+minutes
+  if (day2.getSeconds() < 10) {
+    second = "0"+day2.getSeconds();
+  } else {
+    second = day2.getSeconds();
+  }
+  return  day2.getFullYear()+"-" + month + "-" + day+" "+hours+":"+minutes+":"+second
 }
 export { getDate }
