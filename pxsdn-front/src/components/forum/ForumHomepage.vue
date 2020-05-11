@@ -60,7 +60,7 @@
               <div class="title">
                 <span class="blue title-type" @click="goForumSelectPlate('',item.label)">{{item.label}}</span>
                 ·
-                <span class="special-text-blue">{{item.title}}</span>
+                <span class="special-text-blue" @click="getContent(item.id,item.type_code)">{{item.title}}</span>
               </div>
               <div class="questioner pointer">
                 {{item.nick_name}}
@@ -267,10 +267,10 @@
           })
         },
         getContent(id,type) {
+          sessionStorage.setItem("postId",id);
           this.$router.push({
             path: 'postcontent',
             query: {
-              postId: id,
               type2: type
             },
           })

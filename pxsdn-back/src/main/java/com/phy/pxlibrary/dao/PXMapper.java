@@ -72,4 +72,47 @@ public interface PXMapper {
      * @return
      */
     List<Map<String,Object>> getForumList(Map<String,Object> param);
+
+    /**
+     * 根据ID查询帖子
+     * @param param
+     * @return
+     */
+    List<Map<String, Object>> getPostContent(Map<String, Object> param);
+
+    /**
+     * 根据ID查询帖子回帖
+     * @param param
+     * @return
+     */
+    List<Map<String,Object>> getPostFloor(Map<String, Object> param);
+
+    /**
+     * 插入一条帖子的回帖
+     * @param param
+     * @return
+     */
+    int insertPostReply(Map<String, Object> param);
+
+    /**
+     * 编辑一条帖子的回帖
+     * @param param
+     * @return
+     */
+    int editorPostReply(Map<String, Object> param);
+
+    /**
+     * 删除一条帖子的回帖
+     * @param param
+     * @return
+     */
+    int deletePostReply(Map<String, Object> param);
+
+    /**
+     * 新增一篇帖子
+     * @param param
+     * @return
+     */
+    int insertPost(Map<String, Object> param);
 }
+

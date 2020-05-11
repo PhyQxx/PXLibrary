@@ -93,13 +93,12 @@
 </template>
 
 <script>
-
     export default {
         name: "Index",
       data() {
         let username;
         let isLogin;
-        if (sessionStorage.getItem("userInfo") == '' || sessionStorage.getItem("userInfo") == null) {
+        if (sessionStorage.getItem("userInfo") === '' || sessionStorage.getItem("userInfo") == null) {
           isLogin = false;
         } else {
           let userInfo = JSON.parse(sessionStorage.getItem("userInfo"));

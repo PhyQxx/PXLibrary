@@ -165,13 +165,16 @@
         p.label,
         p.bonus,
         p.create_time postCreatTime,
+        id_settlement,
         u.nick_name,
         u.forum_score,
         (select count(*) from px_post_floor where post_id = p.id) replyNumber,
-        (select count(*) from px_post_floor where post_id = p.id)*100+round(rand()*100) popularity
+        (select count(*) from px_post_floor where post_id = p.id)*100+round(rand()*100) popularity,
+        (SELECT max(create_time) FROM px_post_floor where post_id = p.id) lastTime,
+        (SELECT create_id from px_post_floor WHERE post_id = p.id and create_time = (SELECT max(create_time) FROM px_post_floor where post_id = p.id)) lastReplyId,
+        (select nick_name from px_user where user_id = lastReplyId) lastReplyName
         FROM `px_post` p left join px_user u on p.create_id = u.user_id
-        LEFT join px_post_floor f on p.id = f.post_id
-        where 1 = 1
+        where isdelete = '0'
         <if test="condition != null and condition != ''">
             and region = #{condition} or plate_code = #{condition}
             or type_code = #{condition} or label = #{condition}
@@ -182,4 +185,52 @@
         </if>
     </select>
 
+    <!--根据ID查询帖子-->
+    <select id="getPostContent" resultType="map" parameterType="map">
+       SELECT
+        *,
+        '' header_photo,
+	    (SELECT count(*) from px_post_floor where post_id = p.id) reply
+        FROM
+	    px_post p
+	    LEFT JOIN px_user u ON p.create_id = u.user_id
+        WHERE
+	    id = #{id}
+    </select>
+
+    <!--根据ID查询帖子回帖-->
+    <select id="getPostFloor" resultType="map" parameterType="map">
+        SELECT
+        *,
+        '' header_photo
+        FROM
+        px_post_floor f
+        LEFT JOIN px_user u ON f.create_id = u.user_id
+        WHERE
+        post_id = #{postId}
+        order by create_time
+    </select>
+
+    <!--插入一条帖子的回帖-->
+    <insert id="insertPostReply" parameterType="map">
+        insert into px_post_floor (id,post_id,content,create_id,create_time)
+        VALUES (uuid(),#{postId},#{content},#{replyId},now())
+    </insert>
+
+    <!--编辑一条帖子的回帖-->
+    <update id="editorPostReply" parameterType="map">
+        update px_post_floor set content = #{content} where id = #{id}
+    </update>
+
+    <!--删除一条帖子的回帖-->
+    <delete id="deletePostReply" parameterType="map">
+        delete from px_post_floor where id = #{id}
+    </delete>
+
+    <!--新增一条帖子-->
+    <insert id="insertPost" parameterType="map">
+        INSERT INTO px_post ( id, create_id, title, content, region, plate_code, type_code, label, bonus, create_time )
+        VALUES
+        ( uuid(), #{createId}, #{title}, #{content}, #{region}, #{plateCode}, #{typeCode}, #{label}, #{bonus}, now() )
+    </insert>
 </mapper>

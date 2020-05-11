@@ -107,4 +107,51 @@ public class PXController {
         return result;
     }
 
+    /**根据ID查询帖子*/
+    @RequestMapping(value = "/getPostContent", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> getPostContent(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.getPostContent(param);
+        return result;
+    }
+
+    /**根据ID查询帖子的回帖*/
+    @RequestMapping(value = "/getPostFloor", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> getPostFloor(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.getPostFloor(param);
+        return result;
+    }
+
+    /**插入一条帖子的回帖*/
+    @RequestMapping(value = "/insertPostReply", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> insertPostReply(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.insertPostReply(param);
+        return result;
+    }
+
+    /**编辑一条帖子的回帖*/
+    @RequestMapping(value = "/editorPostReply", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> editorPostReply(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.editorPostReply(param);
+        return result;
+    }
+
+    /**删除一条帖子的回帖*/
+    @RequestMapping(value = "/deletePostReply", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> deletePostReply(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.deletePostReply(param);
+        return result;
+    }
+
+    /**新增一条帖子*/
+    @RequestMapping(value = "/insertPost", method = {RequestMethod.POST,RequestMethod.GET})
+    @ResponseBody
+    public Map<String,Object> insertPost(@RequestBody Map<String,Object> param) {
+        Map<String,Object> result = pxService.insertPost(param);
+        return result;
+    }
 }

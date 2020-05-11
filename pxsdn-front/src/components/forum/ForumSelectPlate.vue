@@ -33,21 +33,21 @@
       <div class="list">
         <div class="one" v-for="item in list">
           <div class="status1">
-            <span v-if="item.isPay" style="background: #909399;color: #fff;border-radius: 5px">已结</span>
-            <span v-if="!item.isPay" style="background: #FFBB66;color: #fff;border-radius: 5px">未结</span>
+            <span v-if="item.id_settlement === '1'" style="background: #909399;color: #fff;border-radius: 5px">已结</span>
+            <span v-if="!item.id_settlement === '1'" style="background: #FFBB66;color: #fff;border-radius: 5px">未结</span>
           </div>
-          <div class="reward">{{item.reward}}</div>
+          <div class="reward">{{item.bonus}}</div>
           <div class="theme">
-            <span v-for="i in item.theme">{{i}}</span>
+            <span>{{item.type_code}}</span>
           </div>
           <div class="author">
-            <span class="special-text-yellow blue">{{item.author.author}}</span>
-            <span style="margin-top: 0.2rem;display: block; margin-top: 0.3rem;">{{item.author.time}}</span>
+            <span class="special-text-yellow blue">{{item.nick_name}}</span>
+            <span style="margin-top: 0.2rem;display: block; margin-top: 0.3rem;color: #999">{{item.postCreatTime}}</span>
           </div>
           <div class="replyAndView">{{item.replyAndView}}</div>
           <div class="lastPerson">
             <span class="special-text-yellow blue">{{item.lastPerson.lastPerson}}</span>
-            <span style="margin-top: 0.2rem;display: block; margin-top: 0.3rem;">{{item.lastPerson.time}}</span>
+            <span style="margin-top: 0.2rem;display: block; margin-top: 0.3rem; color: #999">{{item.lastPerson.time}}</span>
           </div>
           <div class="admin">
             <i class="el-icon-s-tools special-text-blue"></i>
@@ -68,36 +68,7 @@
             type1: "",
             type2: "",
             moderator: ["帅气的布里茨","美丽的AD钙","娃哈哈"],
-            list: [
-              {
-                isPay: true,
-                reward: "200",
-                theme: ["[置顶]","判断输入数据类型"],
-                author: {
-                  author: "帅气的布里茨",
-                  time: "2020-03-02 11:25",
-                },
-                replyAndView: "135/4602",
-                lastPerson: {
-                  lastPerson: "帅气的whh",
-                  time: "2020-03-12 11:25",
-                },
-              },
-              {
-                isPay: true,
-                reward: "200",
-                theme: ["[置顶]","判断输入数据类型"],
-                author: {
-                  author: "帅气的布里茨",
-                  time: "2020-03-02 11:25",
-                },
-                replyAndView: "135/4602",
-                lastPerson: {
-                  lastPerson: "帅气的whh",
-                  time: "2020-03-12 11:25",
-                },
-              },
-            ],
+            list: ''
           }
       },
       watch: {
@@ -105,15 +76,23 @@
           if(to.query.type2 != from.query.type2){
             this.type1 = this.$route.query.type1;
             this.type2 = this.$route.query.type2;
+            this.getPlatePost();
           }
         }
+      },
+      mounted() {
+        this.getPlatePost();
       },
       created() {
         this.type1 = this.$route.query.type1;
         this.type2 = this.$route.query.type2;
       },
       methods: {
-
+        getPlatePost() {
+          this.$ajax.post("/px/getForumList",{condition:this.type2},r=>{
+            this.list = r;
+          })
+        }
       }
     }
 </script>

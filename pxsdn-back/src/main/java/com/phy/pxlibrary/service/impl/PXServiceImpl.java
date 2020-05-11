@@ -4,9 +4,6 @@ import com.phy.pxlibrary.dao.PXMapper;
 import com.phy.pxlibrary.service.PXService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +119,84 @@ public class PXServiceImpl implements PXService {
     public Map<String, Object> getForumList(Map<String, Object> param) {
         Map<String,Object> result = new HashMap<>();
         List<Map<String,Object>> res = pxMapper.getForumList(param);
+        result.put("data",res);
+        result.put("success",true);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getPostContent(Map<String, Object> param) {
+        Map<String,Object> result = new HashMap<>();
+        List<Map<String,Object>> res = pxMapper.getPostContent(param);
+        result.put("data",res);
+        result.put("success",true);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> getPostFloor(Map<String, Object> param) {
+        Map<String,Object> result = new HashMap<>();
+        List<Map<String,Object>> res = pxMapper.getPostFloor(param);
+        result.put("data",res);
+        result.put("success",true);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> insertPostReply(Map<String, Object> param) {
+        Map<String, Object> result = new HashMap<>();
+        int res = 0;
+        try {
+            res = pxMapper.insertPostReply(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = 0;
+        }
+        result.put("data",res);
+        result.put("success",true);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> editorPostReply(Map<String, Object> param) {
+        Map<String, Object> result = new HashMap<>();
+        int res = 0;
+        try {
+            res = pxMapper.editorPostReply(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = 0;
+        }
+        result.put("data",res);
+        result.put("success",true);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> deletePostReply(Map<String, Object> param) {
+        Map<String, Object> result = new HashMap<>();
+        int res = 0;
+        try {
+            res = pxMapper.deletePostReply(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = 0;
+        }
+        result.put("data",res);
+        result.put("success",true);
+        return result;
+    }
+
+    @Override
+    public Map<String, Object> insertPost(Map<String, Object> param) {
+        Map<String, Object> result = new HashMap<>();
+        int res = 0;
+        try {
+            res = pxMapper.insertPost(param);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res = 0;
+        }
         result.put("data",res);
         result.put("success",true);
         return result;

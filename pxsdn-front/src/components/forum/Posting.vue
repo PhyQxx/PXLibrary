@@ -63,120 +63,140 @@
         name: "Posting",
       data() {
         return {
+          region:'',
           title:"",
-          myIntegral: "230",
-          plate: [],
-          plates: [
+          myIntegral: JSON.parse(sessionStorage.getItem("userInfo")).forum_score,
+          plate: '',
+          plates: [{
+            value:"技术区",
+            label:"技术区",
+            children: [
+              {
+                value:"移动开发",
+                label: "移动开发",
+                children: [{
+                  value: 'Android',
+                  label: 'Android'
+                }, {
+                  value: 'iOS',
+                  label: 'iOS'
+                }, {
+                  value: 'Qt',
+                  label: 'Qt'
+                }, {
+                  value: 'WP',
+                  label: 'WP'
+                }]
+              },
+              {
+                value:"Java技术",
+                label: "Java技术",
+                children: [{
+                  value: 'Java SE',
+                  label: 'Java SE'
+                }, {
+                  value: 'Java Web 开发',
+                  label: 'Java Web 开发'
+                }, {
+                  value: 'Java EE',
+                  label: 'Java EE'
+                }, {
+                  value: 'Java其他相关',
+                  label: 'Java其他相关'
+                }]
+              },
+              {
+                value:"Web开发",
+                label: "Web开发",
+                children: [{
+                  value: 'PHP',
+                  label: 'PHP'
+                }, {
+                  value: 'JavaScript',
+                  label: 'JavaScript'
+                }, {
+                  value: 'ASP',
+                  label: 'ASP'
+                }, {
+                  value: 'HTML(CSS)',
+                  label: 'HTML(CSS)'
+                },{
+                  value: 'HTML5',
+                  label: 'HTML5'
+                },{
+                  value: 'Apache',
+                  label: 'Apache'
+                },]
+              },
+              {
+                value:"数据库开发",
+                label: "数据库开发",
+                children: [{
+                  value: 'Oracle',
+                  label: 'Oracle'
+                }, {
+                  value: 'MS-SQL Server',
+                  label: 'MS-SQL Server'
+                }, {
+                  value: '其他数据库开发',
+                  label: '其他数据库开发'
+                },]
+              },
+              {
+                value:"硬件/嵌入式开发",
+                label: "硬件/嵌入式开发",
+                children: [{
+                  value: '嵌入开发(WinCE)',
+                  label: '嵌入开发(WinCE)'
+                }, {
+                  value: '驱动开发/核心开发',
+                  label: '驱动开发/核心开发'
+                }, {
+                  value: '硬件设计',
+                  label: '硬件设计'
+                }, {
+                  value: '单片机/工控',
+                  label: '单片机/工控'
+                },{
+                  value: '汇编语言',
+                  label: '汇编语言'
+                }]
+              },
+              {
+                value:"Linux/Unix社区",
+                label: "Linux/Unix社区",
+                children: [{
+                  value: '系统维护与使用区',
+                  label: '系统维护与使用区'
+                }, {
+                  value: '应用程序开发区',
+                  label: '应用程序开发区'
+                }, {
+                  value: '内核源代码研究区',
+                  label: '内核源代码研究区'
+                }, {
+                  value: '驱动程序开发区',
+                  label: '驱动程序开发区'
+                },{
+                  value: 'CPU和硬件区',
+                  label: 'CPU和硬件区'
+                }]
+              },
+            ]
+          },
             {
-              value:"移动开发",
-              label: "移动开发",
-              children: [{
-                value: 'Android',
-                label: 'Android'
-              }, {
-                value: 'iOS',
-                label: 'iOS'
-              }, {
-                value: 'Qt',
-                label: 'Qt'
-              }, {
-                value: 'WP',
-                label: 'WP'
-              }]
-            },
-            {
-              value:"Java技术",
-              label: "Java技术",
-              children: [{
-                value: 'Java SE',
-                label: 'Java SE'
-              }, {
-                value: 'Java Web 开发',
-                label: 'Java Web 开发'
-              }, {
-                value: 'Java EE',
-                label: 'Java EE'
-              }, {
-                value: 'Java其他相关',
-                label: 'Java其他相关'
-              }]
-            },
-            {
-              value:"Web开发",
-              label: "Web开发",
-              children: [{
-                value: 'PHP',
-                label: 'PHP'
-              }, {
-                value: 'JavaScript',
-                label: 'JavaScript'
-              }, {
-                value: 'ASP',
-                label: 'ASP'
-              }, {
-                value: 'HTML(CSS)',
-                label: 'HTML(CSS)'
-              },{
-                value: 'HTML5',
-                label: 'HTML5'
-              },{
-                value: 'Apache',
-                label: 'Apache'
-              },]
-            },
-            {
-              value:"数据库开发",
-              label: "数据库开发",
-              children: [{
-                value: 'Oracle',
-                label: 'Oracle'
-              }, {
-                value: 'MS-SQL Server',
-                label: 'MS-SQL Server'
-              }, {
-                value: '其他数据库开发',
-                label: '其他数据库开发'
-              },]
-            },
-            {
-              value:"硬件/嵌入式开发",
-              label: "硬件/嵌入式开发",
-              children: [{
-                value: '嵌入开发(WinCE)',
-                label: '嵌入开发(WinCE)'
-              }, {
-                value: '驱动开发/核心开发',
-                label: '驱动开发/核心开发'
-              }, {
-                value: '硬件设计',
-                label: '硬件设计'
-              }, {
-                value: '单片机/工控',
-                label: '单片机/工控'
-              },{
-                value: '汇编语言',
-                label: '汇编语言'
-              }]
-            },
-            {
-              value:"Linux/Unix社区",
-              label: "Linux/Unix社区",
-              children: [{
-                value: '系统维护与使用区',
-                label: '系统维护与使用区'
-              }, {
-                value: '应用程序开发区',
-                label: '应用程序开发区'
-              }, {
-                value: '内核源代码研究区',
-                label: '内核源代码研究区'
-              }, {
-                value: '驱动程序开发区',
-                label: '驱动程序开发区'
-              },{
-                value: 'CPU和硬件区',
-                label: 'CPU和硬件区'
-              }]
+              value:"生活区",
+              label:"生活区",
+              children: [
+                {
+                  value:"灌水乐园",
+                  label: "灌水乐园",
+                },
+                {
+                  value:"非技术区",
+                  label: "非技术区",
+                }
+              ]
             },
           ],
           integral: '',
@@ -193,7 +213,7 @@
         }
       },
       mounted() {
-        // setTimeout(()=>{this.$refs.markdown.addLine()},1000)
+
       },
       methods: {
         childEventHandler:function(res){
@@ -208,37 +228,69 @@
           console.log(value);
         },
         publish() {
-          if (this.title == '') {
+          if (this.title === '') {
             this.$message({
               message: "文章标题不能为空",
               type: "warning"
             })
-          } else if (this.integral == '') {
+          } else if (this.integral === '') {
             this.$message({
               message: "赏分分数不能为空",
               type: "warning"
             })
-          } else if (this.msg.mdValue == '') {
+          } else if (this.integral > this.myIntegral) {
+            this.$message({
+              message: "赏分分数不能大于所有积分",
+              type: "warning"
+            })
+          } else if (this.msg.mdValue === '') {
             this.$message({
               message: "编辑内容不能为空",
               type: "warning"
             })
-          } else if (this.plate == '') {
+          } else if (this.plate === '') {
             this.$message({
               message: "请选择相应版块",
               type: "warning"
             })
-          } else {
-            this.$message({
-              message: '发表成功',
-              type: 'success'
+          } else if (this.plate[0] === '技术区') {
+            this.$ajax.post("/px/insertPost",{createId:JSON.parse(sessionStorage.getItem("userInfo")).user_id,
+            title:this.title,content:this.msg.mdValue,region:this.plate[0],plateCode:this.plate[1],typeCode:this.plate[2],
+            bonus:this.integral},r=>{
+              if (r === 1) {
+                this.$message({
+                  message: '发表成功',
+                  type: 'success'
+                });
+                this.$router.push({
+                  name: 'forumhomepage'
+                });
+                location.reload();
+              } else {
+                this.$message.error("发表失败")
+              }
             });
-            console.log("文章标题",this.title)
-            console.log("赏分",this.integral)
-            console.log("编辑内容",this.msg.mdValue)
-            console.log("板块",this.plate)
-            console.log("板块",this.msgShow)
-            console.log("板块",this.msg)
+          } else if (this.plate[0] === '生活区') {
+            this.$ajax.post("/px/insertPost", {
+              createId: JSON.parse(sessionStorage.getItem("userInfo")).user_id,
+              title: this.title,
+              content: this.msg.mdValue,
+              region: this.plate[0],
+              label: this.plate[1],
+            }, r => {
+              if (r === 1) {
+                this.$message({
+                  message: '发表成功',
+                  type: 'success'
+                });
+                this.$router.push({
+                  name: 'forumhomepage'
+                });
+                location.reload();
+              } else {
+                this.$message.error("发表失败")
+              }
+            })
           }
         }
       },
@@ -256,7 +308,7 @@
     margin: 1rem;
   }
   .choice-plate{
-    padding: 1rem;
+    padding: 1rem 0;
   }
   .editorContainer{
     height: 500px;
